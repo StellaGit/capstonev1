@@ -83,9 +83,8 @@ jobs:
             docker push stellasalyga/webserver:$TAG
 
 workflows:
+  # Name the workflow "welcome"
   my_workflow:
-    jobs: 
+    # Run the welcome/run job in its own container
+    jobs:
       - envbuild
-      - build-upload-docker:
-          requires:
-            - build
