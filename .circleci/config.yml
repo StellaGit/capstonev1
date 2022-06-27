@@ -42,7 +42,7 @@ jobs:
           . venv/bin/activate
           make lint
 # push Docker to the repository
-build-upload-docker:
+  build-upload-docker:
     docker:
       - image: circleci/node:13.8.0
     steps:
