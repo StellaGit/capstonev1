@@ -6,7 +6,7 @@
 ## Step 2:
 # Copy source code to working directory
 
-FROM nginx:latest
+FROM nginx:1.23
 COPY site-content /usr/share/nginx/html
 
 
