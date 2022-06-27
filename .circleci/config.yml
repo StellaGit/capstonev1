@@ -1,90 +1,37 @@
-# Python CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-python/ for more details
-#
-orbs:
-  # Choose either one of the orbs below
-  # Declare a dependency on the welcome-orb
-  # welcome: circleci/welcome-orb@0.4.1
-  aws-cli: circleci/aws-cli@2.0.3
-# Orchestrate or schedule a set of jobs
-version: 2
+version: 2.1
+
+        
 jobs:
   envbuild:
     docker:
-    # Use the same Docker base as the project
       - image: python:3.7.3-stretch
-
     working_directory: ~/capstonev1
-
-    steps:
-    - checkout
-
-# Download and cache dependencies
-    - restore_cache:
-        keys:
-#          - v1-dependencies-{{ checksum "requirements.txt" }}
-# fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-    - run:
-        name: install dependencies
-        command: |
-          python3 -m venv venv
-          . venv/bin/activate
-          make install
-
-          wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
-              chmod +x /bin/hadolint
-    - save_cache:
-        paths:
-          - ./venv
-        key: v1-dependencies-{{ checksum "requirements.txt" }}
-
-# run lint!
-    - run:
-        name: run lint
-        command: |
-          . venv/bin/activate
-          make lint
-# push Docker to the repository
-  build-upload-docker:
-    docker:
-      - image: circleci/node:13.8.0
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 19.03.13
+# Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}
+  # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
       - run:
-         name: Build and Upload Docker Image
-         command: |
-          chmod +x run_docker.sh
-          bash run_docker.sh
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            make install
 
-  push-docker:
-      docker:
-        - image: cimg/go:1.17
-          auth:
-            username: $DOCKER_USER
-            password: $DOCKER_PASS  # context / project UI env-var reference
-      steps:
-        - checkout
-        # ... steps for building/testing app ...
+            wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
+                chmod +x /bin/hadolint
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
 
-        - setup_remote_docker:
-            version: 20.10.14
-            docker_layer_caching: true
-
-        # build and push Docker image
-        - run: |
-            TAG=0.1.$CIRCLE_BUILD_NUM
-            docker build -t stellasalyga/webserver:$TAG .
-            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-            docker push stellasalyga/webserver:$TAG
 
 workflows:
-  # Name the workflow "welcome"
-  my_workflow:
-    # Run the welcome/run job in its own container
+  default:
     jobs:
       - envbuild
+
