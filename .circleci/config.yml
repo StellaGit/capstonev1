@@ -2,9 +2,15 @@
 #
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 #
+orbs:
+  # Choose either one of the orbs below
+  # Declare a dependency on the welcome-orb
+  # welcome: circleci/welcome-orb@0.4.1
+  aws-cli: circleci/aws-cli@2.0.3
+# Orchestrate or schedule a set of jobs
 version: 2
 jobs:
-  build:
+  envbuild:
     docker:
     # Use the same Docker base as the project
       - image: python:3.7.3-stretch
@@ -46,17 +52,40 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-    - checkout
-    - run:
-        name: push Docker to the repository
-        command: |
-          ./run_docker.sh
-          ./upload_docker.sh
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - run:
+         name: Build and Upload Docker Image
+         command: |
+          chmod +x run_docker.sh
+          bash run_docker.sh
+
+  push-docker:
+      docker:
+        - image: cimg/go:1.17
+          auth:
+            username: $DOCKER_USER
+            password: $DOCKER_PASS  # context / project UI env-var reference
+      steps:
+        - checkout
+        # ... steps for building/testing app ...
+
+        - setup_remote_docker:
+            version: 20.10.14
+            docker_layer_caching: true
+
+        # build and push Docker image
+        - run: |
+            TAG=0.1.$CIRCLE_BUILD_NUM
+            docker build -t stellasalyga/webserver:$TAG .
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push stellasalyga/webserver:$TAG
 
 workflows:
-  default:
+  my_workflow:
     jobs: 
-        - build
-        - build-upload-docker:
-            requires:
-              - build
+      - envbuild
+      - build-upload-docker:
+          requires:
+            - build
