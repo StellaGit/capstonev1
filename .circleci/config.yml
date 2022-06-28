@@ -79,12 +79,12 @@ workflows:
   deployment:
     jobs:
       - aws-eks/create-cluster:
-          cluster-name: ss_capstone
+          cluster-name: ss-capstone
       - test-cluster:
-          cluster-name: ss_capstone
+          cluster-name: ss-capstone
           requires:
             - aws-eks/create-cluster
       - aws-eks/delete-cluster:
-          cluster-name: ss_capstone
+          cluster-name: ss-capstone
           requires:
             - test-cluster
