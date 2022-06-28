@@ -21,6 +21,7 @@ screenshots/success_lint.png
 
 https://circleci.com/developer/orbs/orb/circleci/aws-eks
 The Docker container is deployed to a Kubernetes cluster. The cluster is deployed with CloudFormation. This should be in the source code of the student’s submission.
+To test locally:
     #Install eksctl
 	curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 	chmod +x ./eksctl 
@@ -28,5 +29,7 @@ The Docker container is deployed to a Kubernetes cluster. The cluster is deploye
     #Install kubectl
 	curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 	chmod +x ./kubectl
+
+Use EKS on AWS
 
 Use Rolling Deployment successfully	The project performs the correct steps to do a rolling deployment into the environment selected. Student demonstrates the successful completion of chosen deployment methodology with screenshots.

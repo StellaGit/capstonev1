@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ss-capstone
+  labels:
+    app: ss-capstone
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ss-capstone
+  template:
+    metadata:
+      labels:
+        app: ss-capstone
+    spec:
+      containers:
+      - name: sswebserver
+        image: stellasalyga/sswebserver:latest
+        ports:
+        - containerPort: 80
