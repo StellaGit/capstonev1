@@ -43,6 +43,7 @@ jobs:
           version: 19.03.13
       - run:
          name: Build and Upload Docker Image
+         no_output_timeout: 30m
          command: |
           chmod +x run_docker.sh
           bash run_docker.sh
