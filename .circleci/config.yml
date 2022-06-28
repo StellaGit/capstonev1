@@ -34,8 +34,40 @@ jobs:
           command: |
             . venv/bin/activate
             make lint
+  prep-image-docker:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - run:
+         name: Build and Upload Docker Image
+         command: |
+          chmod +x run_docker.sh
+          bash run_docker.sh
+  deploy-image-docker:
+    docker:
+      - image: cimg/base:2022.06
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - run:
+          name: Build and push to Docker Hub
+          command: |
+            docker build -t $DOCKER_USER/$IMAGE_NAME:latest .
+            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+            docker push $DOCKER_USER/$IMAGE_NAME:latest
+
+
 workflows:
   default:
     jobs:
       - envbuild
-
+      - prep-image-docker
+          requires:
+            - envbuild    
+      - deploy-image-docker:
+          requires:
+            - prep-image-docker        

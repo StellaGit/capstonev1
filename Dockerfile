@@ -1,12 +1,12 @@
 #FROM python:3.7.3-stretch
-
+FROM nginx:1.23
 ## Step 1:
 # Create a working directory
-#WORKDIR /capp
+#WORKDIR /app
 ## Step 2:
 # Copy source code to working directory
 
-FROM nginx:1.23
+
 COPY site-content /usr/share/nginx/html
 
 
@@ -22,4 +22,4 @@ EXPOSE 80
 
 ## Step 5:
 # Run app.py at container launch
-#CMD ["python", "app.py"]
+#CMD ["--host", "0.0.0.0", "--port", "8000"]
