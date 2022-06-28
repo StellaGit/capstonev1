@@ -66,9 +66,7 @@ workflows:
   default:
     jobs:
       - envbuild
-      - prep-image-docker:
-          requires:
-            - envbuild    
+   
       - deploy-image-docker:
           requires:
-            - prep-image-docker        
+            - envbuild        

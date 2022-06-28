@@ -4,6 +4,7 @@ Create Github repository with project code.
 All project code is stored in a GitHub repository and a link to the repository has been provided for reviewers.
 screenshots/github_link.txt
 Use image repository to store Docker images	The project uses a centralized image repository to manage images built in the project. After a clean build, images are pushed to the repository.
+https://circleci.com/blog/how-to-build-a-docker-image-on-circleci-2-0/
 Build Docker Container
 Build Docker Image from nginx:latest and push to stellasalyga/webserver
 https://www.docker.com/blog/how-to-use-the-official-nginx-docker-image/
@@ -14,7 +15,7 @@ Successful Deployment
 screenshots/failed_lint.png
 screenshots/success_lint.png
 
-https://circleci.com/blog/how-to-build-a-docker-image-on-circleci-2-0/
+
 The Docker container is deployed to a Kubernetes cluster. The cluster is deployed with CloudFormation. This should be in the source code of the student’s submission.
 Use Rolling Deployment successfully	The project performs the correct steps to do a rolling deployment into the environment selected. Student demonstrates the successful completion of chosen deployment methodology with screenshots.
 
