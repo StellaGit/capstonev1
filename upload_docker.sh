@@ -5,7 +5,7 @@
 
 # Step 1:
 # Create dockerpath
-dockerpath="stellasalyga/webserver"
+dockerpath="stellasalyga/sswebserver"
 
 # Step 2:  
 # Authenticate & tag
