@@ -103,7 +103,7 @@ jobs:
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: nginx-deployment.yaml
-          resource-name: service/ss-capstone
+          resource-name: service/my-service
 
   test-deployment:
     docker:
