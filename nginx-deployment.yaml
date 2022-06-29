@@ -30,5 +30,5 @@ spec:
     app: ss-capstone
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 8080
+      port: 8000
+      targetPort: 80
