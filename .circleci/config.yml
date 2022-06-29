@@ -122,6 +122,8 @@ jobs:
       - run:
           command: |
             kubectl get deployment
+            kubectl get services
+            kubectl get pods
           name: Test deployment
 workflows:
 #  app_prep:
@@ -133,24 +135,24 @@ workflows:
 #            - envbuild        
   deployment:
     jobs:
-      - aws-eks/create-cluster:
-          cluster-name: ss-capstone
-      - test-cluster:
-          cluster-name: ss-capstone
-          requires:
-            - aws-eks/create-cluster
+#      - aws-eks/create-cluster:
+#          cluster-name: ss-capstone
+#      - test-cluster:
+#          cluster-name: ss-capstone
+#          requires:
+#            - aws-eks/create-cluster
       - create-deployment:
           cluster-name: ss-capstone
-          requires:
-            - test-cluster
-      - test-deployment:
-          cluster-name: ss-capstone
-          requires:
-            - test-cluster
+#          requires:
+#            - test-cluster
       - create-service:
           cluster-name: ss-capstone
           requires:
-            - test-deployment
+            - create-deployment
+      - test-deployment:
+          cluster-name: ss-capstone
+          requires:
+            - create-service
 #      - aws-eks/delete-cluster:
 #          cluster-name: ss-capstone
 #          requires:
