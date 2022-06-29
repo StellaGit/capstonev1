@@ -138,8 +138,8 @@ workflows:
  #         cluster-name: ss-capstone
  #         requires:
 #            - aws-eks/create-cluster
-#      - create-deployment:
-#          cluster-name: ss-capstone
+      - create-deployment:
+          cluster-name: ss-capstone
 #          requires:
 #            - test-cluster
       - test-deployment:
