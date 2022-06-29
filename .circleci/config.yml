@@ -149,6 +149,8 @@ workflows:
             - test-cluster
       - create-service:
           cluster-name: ss-capstone
+          requires:
+            - test-deployment
 #      - aws-eks/delete-cluster:
 #          cluster-name: ss-capstone
 #          requires:
