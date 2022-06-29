@@ -85,7 +85,8 @@ jobs:
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: nginx-deployment.yaml
-          resource-name: ss-capstone
+          resource-name: deployment/ss-capstone
+
   test-deployment:
     docker:
       - image: 'cimg/python:3.10'
@@ -104,30 +105,30 @@ jobs:
             kubectl get deployment
           name: Test deployment
 workflows:
-  app_prep:
-    jobs:
-      - envbuild
+#  app_prep:
+#    jobs:
+#      - envbuild
    
 #      - deploy-image-docker:
 #          requires:
 #            - envbuild        
   deployment:
     jobs:
-      - aws-eks/create-cluster:
+#      - aws-eks/create-cluster:
+#          cluster-name: ss-capstone
+#      - test-cluster:
+ #         cluster-name: ss-capstone
+ #         requires:
+#            - aws-eks/create-cluster
+      - create-deployment:
           cluster-name: ss-capstone
-      - test-cluster:
+#          requires:
+#            - test-cluster
+      - test-deployment:
           cluster-name: ss-capstone
           requires:
-            - aws-eks/create-cluster
+            - aws-eks/update-container-image
 #      - aws-eks/delete-cluster:
 #          cluster-name: ss-capstone
 #          requires:
 #            - test-cluster
-      - create-deployment:
-          cluster-name: ss-capstone
-          requires:
-            - test-cluster
-      - test-deployment:
-          cluster-name: ss-capstone
-          requires:
-            - create-deployment
