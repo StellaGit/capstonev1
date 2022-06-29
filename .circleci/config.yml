@@ -133,20 +133,20 @@ workflows:
 #            - envbuild        
   deployment:
     jobs:
-#      - aws-eks/create-cluster:
-#          cluster-name: ss-capstone
+      - aws-eks/create-cluster:
+          cluster-name: ss-capstone
       - test-cluster:
           cluster-name: ss-capstone
- #         requires:
-#            - aws-eks/create-cluster
+          requires:
+            - aws-eks/create-cluster
       - create-deployment:
           cluster-name: ss-capstone
-#          requires:
-#            - test-cluster
+          requires:
+            - test-cluster
       - test-deployment:
           cluster-name: ss-capstone
           requires:
-            - create-deployment
+            - test-cluster
       - create-service:
           cluster-name: ss-capstone
 #      - aws-eks/delete-cluster:
