@@ -68,6 +68,7 @@ jobs:
           command: |
             kubectl get services
             kubectl get pods
+            kubectl describe configmap -n kube-system aws-auth
           name: Test cluster
   create-deployment:
     docker:
