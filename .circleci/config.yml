@@ -147,8 +147,8 @@ workflows:
           cluster-name: ss-capstone
           requires:
             - create-deployment
-#      - create-service:
-#          cluster-name: ss-capstone
+      - create-service:
+          cluster-name: ss-capstone
 #      - aws-eks/delete-cluster:
 #          cluster-name: ss-capstone
 #          requires:
