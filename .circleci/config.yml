@@ -127,7 +127,7 @@ workflows:
       - test-deployment:
           cluster-name: ss-capstone
           requires:
-            - aws-eks/update-container-image
+            - create-deployment
 #      - aws-eks/delete-cluster:
 #          cluster-name: ss-capstone
 #          requires:
