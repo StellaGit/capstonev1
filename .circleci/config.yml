@@ -67,6 +67,7 @@ jobs:
       - run:
           command: |
             kubectl get services
+            kubectl get pods
           name: Test cluster
   create-deployment:
     docker:
@@ -84,8 +85,24 @@ jobs:
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: nginx-deployment.yaml
-          resource-name: deployment/nginx-deployment
-
+          resource-name: ss-capstone
+  test-deployment:
+    docker:
+      - image: 'cimg/python:3.10'
+    parameters:
+      cluster-name:
+        description: |
+          Name of the EKS cluster
+        type: string
+    steps:
+      - kubernetes/install:
+          kubectl-version: v1.22.0
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: << parameters.cluster-name >>
+      - run:
+          command: |
+            kubectl get deployment
+          name: Test deployment
 workflows:
   app_prep:
     jobs:
@@ -110,18 +127,7 @@ workflows:
           cluster-name: ss-capstone
           requires:
             - test-cluster
-      - aws-eks/update-container-image:
+      - test-deployment:
           cluster-name: ss-capstone
-          container-image-updates: 'sswebserver=stellasalyga/sswebserver:latest'
-          post-steps:
-            - kubernetes/delete-resource:
-                resource-names: sswebserver
-                resource-types: nginx-deployment
-                wait: true
           requires:
             - create-deployment
-          resource-name: deployment/nginx-deployment
-#      - aws-eks/delete-cluster:
-#          cluster-name: ss-capstone
-#          requires:
-#            - aws-eks/update-container-image
